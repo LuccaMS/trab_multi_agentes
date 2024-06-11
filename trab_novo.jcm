@@ -1,0 +1,5 @@
+mas main {
+
+    //agent sample_agent
+    agent gui
+}
