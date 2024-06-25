@@ -1,5 +1,7 @@
 mas main {
+    //agent agent1
 
-    agent agent1
-    agent agent2
+    agent water_quality : agent1.asl {
+        beliefs: ph_belief(normal)
+    }
 }

@@ -1,22 +1,20 @@
-
 !test_sensor_gui.
 
 +!test_sensor_gui
   <- makeArtifact("sensor", "artifacts.SensorArtifact", [], D);
-     //makeArtifact("sensor2", "artifacts.SensorArtifact", [], I);
      focus(D);
-     //focus(I);
      println("Sensor GUI initialized").
 
 +ph(V)
-  <- println("pH updated: ", V).
+  <- println("pH updated: ", V, S).
 
 +temperature(V)
-  <- println("Temperature updated: ", V).
+  <- println("Temperature updated: ", V,S).
 
-+ok[artifact_id(S)] : ph(PH) & temperature(TEMP)
-  <- .print("Current pH: ", PH, ", Current Temperature: ", TEMP).
-     //setSensorData(PH + 0.1, TEMP + 0.5)[artifact_id(S)].
++ok : ph(PH) & temperature(TEMP) 
+<- println("Current pH: ", PH, ", Current Temperature: ", TEMP).
+
++generated_values[artifact_id(S)] <- println("Generated working", S).
 
 +closed
   <- .print("Close");

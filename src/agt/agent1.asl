@@ -1,18 +1,30 @@
 !monitor_sensor1.
 
 +!monitor_sensor1
-  <- makeArtifact("sensor1", "artifacts.Sensor1Artifact", [], D);
+  <- makeArtifact("sensor1", "artifacts.SensorArtifact", [], D);
      focus(D);
-     println("Agent1 initialized").
+     println("Agent initialized").
 
-+ph(V) : V >= 6.0 & V <= 14.0
-  <- .print("pH updated: ", V).
++ph(V) : V < 2.0 
+  <- .print("ALERTA: NIVEIS DE PH EXTREMAMENTE ACIDOS: ", V);
+  +ph_belief(extreme_acid);
+  .abolish(ph_belief(_)).
 
-+ph(V) : V < 6.0
-  <- .print("ALERT: Low pH level detected: ", V).
++ph(V) : V >= 2.0 & V < 6.5
+  <- .print("ALERTA: NIVEIS DE PH ACIDOS: ", V);
+  +ph_belief(acid).
+
++ph(V) : V >= 6.5 & V < 8.5
+  <- .print("INFORME: NIVEIS DE PH ACEITAVEIS: ", V);
+  +ph_belief(normal).
+
++ph(V) : V > 8.5 & V <= 14.0
+  <- .print("ALERT: NIVEIS DE PH BASICOS: ", V);
+  +ph_belief(basic).
 
 +ph(V) : V > 14.0
-  <- .print("Something might be wrong with the sensor, pH out of scale: ", V).
+  <- .print("ERRO: NIVEIS DE PH FORA DE ESCALA: ", V);
+  +ph_belief(out_of_scale).
 
 +temperature(V) : V >= 10 & V <= 30.0
   <- .print("Temperature updated: ", V).

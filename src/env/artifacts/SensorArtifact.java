@@ -3,7 +3,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import cartago.*;
 import cartago.tools.*;
-
+import java.util.Random;
 
 public class SensorArtifact extends GUIArtifact {
     private SensorFrame frame;
@@ -48,16 +48,17 @@ public class SensorArtifact extends GUIArtifact {
         System.out.println(value);
     }
 
-    private double getPH() {
+    public double getPH() {
         return Double.parseDouble(frame.getPHText());
     }
 
-    private double getTemperature() {
+    public double getTemperature() {
         return Double.parseDouble(frame.getTempText());
     }
 
     class SensorFrame extends JFrame {
         private JButton okButton;
+        private JButton randomButton;  // New button
         private JTextField phText;
         private JTextField tempText;
 
@@ -70,7 +71,7 @@ public class SensorArtifact extends GUIArtifact {
             
             okButton = new JButton("ok");
             okButton.setSize(80, 50);
-            
+
             phText = new JTextField(10);
             phText.setText("7.0");
             phText.setEditable(true);
@@ -102,4 +103,5 @@ public class SensorArtifact extends GUIArtifact {
             tempText.setText(s);
         }
     }
+
 }
