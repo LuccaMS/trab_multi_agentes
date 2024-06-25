@@ -12,8 +12,8 @@ public class SensorArtifact extends GUIArtifact {
         frame = new SensorFrame();
         
         linkActionEventToOp(frame.okButton, "ok");
-        linkKeyStrokeToOp(frame.phText, "ENTER", "updatePH");
-        linkKeyStrokeToOp(frame.tempText, "ENTER", "updateTemp");
+        //linkKeyStrokeToOp(frame.phText, "ENTER", "updatePH");
+        //linkKeyStrokeToOp(frame.tempText, "ENTER", "updateTemp");
         linkWindowClosingEventToOp(frame, "closed");
         
         defineObsProperty("ph", getPH());
@@ -22,11 +22,21 @@ public class SensorArtifact extends GUIArtifact {
     }
 
     @INTERNAL_OPERATION void ok(ActionEvent ev) {
+        updatePH_new();
+        updateTemp_new();
         signal("ok");
     }
 
     @INTERNAL_OPERATION void closed(WindowEvent ev) {
         signal("closed");
+    }
+
+    @INTERNAL_OPERATION void updatePH_new() {
+        getObsProperty("ph").updateValue(getPH());
+    }
+
+    @INTERNAL_OPERATION void updateTemp_new() {
+        getObsProperty("temperature").updateValue(getTemperature());
     }
 
     @INTERNAL_OPERATION void updatePH(ActionEvent ev) {

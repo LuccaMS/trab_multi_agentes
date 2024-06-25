@@ -5,26 +5,33 @@
      focus(D);
      println("Agent initialized").
 
-+ph(V) : V < 2.0 
-  <- .print("ALERTA: NIVEIS DE PH EXTREMAMENTE ACIDOS: ", V);
-  +ph_belief(extreme_acid);
-  .abolish(ph_belief(_)).
++!update_ph_belief(NewBelief)
+  <- ?ph_belief(CurrentBelief);
+     !remove_ph_belief(CurrentBelief);
+     +ph_belief(NewBelief).
+
++!remove_ph_belief(CurrentBelief)
+  <- -ph_belief(CurrentBelief).
+
++ph(V) : V < 2.0 & V >= 0.0
+  <- !update_ph_belief(extreme_acid);
+     .print("ALERTA: NIVEIS DE PH EXTREMAMENTE ACIDOS: ", V).
 
 +ph(V) : V >= 2.0 & V < 6.5
-  <- .print("ALERTA: NIVEIS DE PH ACIDOS: ", V);
-  +ph_belief(acid).
+  <- !update_ph_belief(acid);
+     .print("ALERTA: NIVEIS DE PH ACIDOS: ", V).
 
 +ph(V) : V >= 6.5 & V < 8.5
-  <- .print("INFORME: NIVEIS DE PH ACEITAVEIS: ", V);
-  +ph_belief(normal).
+  <- !update_ph_belief(normal);
+     .print("INFORME: NIVEIS DE PH ACEITAVEIS: ", V).
 
 +ph(V) : V > 8.5 & V <= 14.0
-  <- .print("ALERT: NIVEIS DE PH BASICOS: ", V);
-  +ph_belief(basic).
+  <- !update_ph_belief(basic);
+     .print("ALERTA: NIVEIS DE PH BASICOS: ", V).
 
-+ph(V) : V > 14.0
-  <- .print("ERRO: NIVEIS DE PH FORA DE ESCALA: ", V);
-  +ph_belief(out_of_scale).
++ph(V) : V > 14.0 | V < 0.0
+  <- !update_ph_belief(out_of_scale);
+    .print("Something might be wrong with the sensor, pH out of scale: ", V).
 
 +temperature(V) : V >= 10 & V <= 30.0
   <- .print("Temperature updated: ", V).
