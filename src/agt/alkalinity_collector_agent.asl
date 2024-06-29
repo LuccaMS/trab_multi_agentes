@@ -33,6 +33,19 @@ alkalinity_belief(normal).
 +!send_alkalinity_belief(Belief, Value)
   <- .send(central_agent, tell, received_alkalinity_belief(Belief, Value)).
 
+
++!set_alkalinity(Value)
+  <- .print("Setting alkalinity to: ", Value);
+     .my_name(Me);
+     focus(sensor);
+     .set_obs_property("alkalinity", Value).
+
++!adjust_alkalinity(Delta)
+  <- ?alkalinity(Value);
+     NewValue = Value + Delta;
+     !set_alkalinity(NewValue).
+
+
 +closed
   <- .print("Close");
      .my_name(Me);

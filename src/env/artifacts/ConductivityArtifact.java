@@ -19,6 +19,13 @@ public class ConductivityArtifact extends GUIArtifact {
         frame.setVisible(true);
     }
 
+    @OPERATION void set_conductivity(double newConductivity) {
+    frame.setConductivityText(String.valueOf(newConductivity));
+    getObsProperty("conductivity").updateValue(newConductivity);
+    displayMessage("Conductivity set to: " + newConductivity, Color.GREEN);
+    }
+
+
     @INTERNAL_OPERATION void condOk(ActionEvent ev) {
         updateConductivity_new();
         signal("condOk");

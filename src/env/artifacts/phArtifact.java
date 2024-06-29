@@ -28,6 +28,11 @@ public class phArtifact extends GUIArtifact {
         updateTemp_new();
         signal("ok");
     }*/
+    @OPERATION void set_pH(double newPH) {
+        frame.setPHText(String.valueOf(newPH));
+        getObsProperty("ph").updateValue(newPH);
+        displayMessage("pH set to: " + newPH, Color.GREEN);
+    }
 
     @INTERNAL_OPERATION void phOk(ActionEvent ev) { // Handle new button
         updatePH_new();

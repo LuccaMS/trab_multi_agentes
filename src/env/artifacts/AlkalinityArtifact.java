@@ -19,6 +19,12 @@ public class AlkalinityArtifact extends GUIArtifact {
         frame.setVisible(true);
     }
 
+    @OPERATION void set_alkalinity(double newAlkalinity) {
+    frame.setAlkalinityText(String.valueOf(newAlkalinity));
+    getObsProperty("alkalinity").updateValue(newAlkalinity);
+    displayMessage("Alkalinity set to: " + newAlkalinity, Color.GREEN);
+    }
+
     @INTERNAL_OPERATION void alkOk(ActionEvent ev) {
         updateAlkalinity_new();
         signal("alkOk");

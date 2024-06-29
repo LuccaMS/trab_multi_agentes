@@ -49,6 +49,18 @@ ph_belief(normal).
   <- .send(central_agent, tell, received_ph_belief(Belief, Value)).
 
 
++!set_pH(Value)
+  <- .print("Setting pH to: ", Value);
+     .my_name(Me);
+     focus(sensor);
+     .set_obs_property("ph", Value).
+
++!adjust_pH(Delta)
+  <- ?ph(Value);
+     NewValue = Value + Delta;
+     !set_pH(NewValue).
+
+
 +closed
   <- .print("Close");
      .my_name(Me);

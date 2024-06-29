@@ -33,6 +33,17 @@ conductivity_belief(normal).
 +!send_conductivity_belief(Belief, Value)
   <- .send(central_agent, tell, received_conductivity_belief(Belief, Value)).
 
++!set_conductivity(Value)
+  <- .print("Setting conductivity to: ", Value);
+     .my_name(Me);
+     focus(sensor);
+     .set_obs_property("conductivity", Value).
+
++!adjust_conductivity(Delta)
+  <- ?conductivity(Value);
+     NewValue = Value + Delta;
+     !set_conductivity(NewValue).
+
 +closed
   <- .print("Close");
      .my_name(Me);
