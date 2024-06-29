@@ -1,3 +1,4 @@
+/*
 !start.
 
 +!start
@@ -95,23 +96,34 @@
 { include("$jacamoJar/templates/common-cartago.asl") }
 { include("$jacamoJar/templates/common-moise.asl") }
 
+*/
 
 
-/*
 // CentralAgent.asl
 !start.
 
 +!start
   <- println("Central Agent started").
 
-+received_ph_belief(Belief, Value) 
-  <- .print("Received belief: ", Belief, " with value: ", Value).
++!update_ph_belief_central(NewBelief)
+  <- ?ph_belief(CurrentBelief);
+     -ph_belief(CurrentBelief);
+     +ph_belief(NewBelief);
+     .send(ph_collector_agent, askOne, ph(Value));
+     .print("Recieved belief: ", ph_belief, " with value: ", Value).
+
+/*+received_ph_belief(Belief, Value)
+  <- .print("Received belief: ", Belief, " with value: ", Value);
+     !set_values(Value - 10).
 
 +received_alkalinity_belief(Belief, Value)
   <- .print("Received belief: ", Belief, " with value: ", Value).
 
 +received_conductivity_belief(Belief, Value)
-  <- .print("Received belief: ", Belief, " with value: ", Value).
+  <- .print("Received belief: ", Belief, " with value: ", Value).*/
+
++!set_values(Value)
+  <- .send(ph_collector_agent, achieve, set_pH(Value)).
 
 { include("$jacamoJar/templates/common-cartago.asl") }
-{ include("$jacamoJar/templates/common-moise.asl") }*/
+{ include("$jacamoJar/templates/common-moise.asl") }

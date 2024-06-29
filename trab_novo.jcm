@@ -4,7 +4,9 @@ mas main {
         beliefs: ph_belief(normal)
     }*/
     agent ph_collector_agent
-    agent central_agent
-    agent alkalinity_collector_agent
-    agent conductivity_collector_agent
+    agent central_agent : central_agent.asl {
+        beliefs: ph_belief(normal)
+    }
+    //agent alkalinity_collector_agent
+    //agent conductivity_collector_agent
 }

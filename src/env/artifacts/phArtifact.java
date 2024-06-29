@@ -12,23 +12,14 @@ public class phArtifact extends GUIArtifact {
     
     public void setup() {
         frame = new SensorFrame();
-        
-        //linkActionEventToOp(frame.okButton, "ok");
-        linkActionEventToOp(frame.phOkButton, "phOk"); // New button for pH
-        //linkKeyStrokeToOp(frame.phText, "ENTER", "updatePH");
-        //linkKeyStrokeToOp(frame.tempText, "ENTER", "updateTemp");
+    
+        linkActionEventToOp(frame.phOkButton, "phOk");
         linkWindowClosingEventToOp(frame, "closed");
         defineObsProperty("ph", getPH());
         frame.setVisible(true);
     }
 
-    /*
-    @INTERNAL_OPERATION void ok(ActionEvent ev) {
-        updatePH_new();
-        updateTemp_new();
-        signal("ok");
-    }*/
-    @OPERATION void set_pH(double newPH) {
+    @OPERATION void setPH(double newPH) {
         frame.setPHText(String.valueOf(newPH));
         getObsProperty("ph").updateValue(newPH);
         displayMessage("pH set to: " + newPH, Color.GREEN);
