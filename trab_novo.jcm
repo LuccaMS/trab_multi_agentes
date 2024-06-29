@@ -5,4 +5,6 @@ mas main {
     }*/
     agent ph_collector_agent
     agent central_agent
+    agent alkalinity_collector_agent
+    agent conductivity_collector_agent
 }
