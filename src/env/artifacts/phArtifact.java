@@ -7,7 +7,7 @@ import cartago.*;
 import cartago.tools.*;
 import java.util.Random;
 
-public class SensorArtifact extends GUIArtifact {
+public class phArtifact extends GUIArtifact {
     private SensorFrame frame;
     
     public void setup() {

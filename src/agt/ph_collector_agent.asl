@@ -2,7 +2,7 @@
 ph_belief(normal).
 
 +!monitorar
-  <- makeArtifact("sensor1", "artifacts.SensorArtifact", [], D);
+  <- makeArtifact("sensor1", "artifacts.phArtifact", [], D);
      focus(D);
      println("Agent initialized").
 
