@@ -1,6 +1,8 @@
 package artifacts;
 import javax.swing.*;
 import java.awt.event.*;
+import java.awt.*;
+
 import cartago.*;
 import cartago.tools.*;
 import java.util.Random;
@@ -11,20 +13,25 @@ public class SensorArtifact extends GUIArtifact {
     public void setup() {
         frame = new SensorFrame();
         
-        linkActionEventToOp(frame.okButton, "ok");
+        //linkActionEventToOp(frame.okButton, "ok");
+        linkActionEventToOp(frame.phOkButton, "phOk"); // New button for pH
         //linkKeyStrokeToOp(frame.phText, "ENTER", "updatePH");
         //linkKeyStrokeToOp(frame.tempText, "ENTER", "updateTemp");
         linkWindowClosingEventToOp(frame, "closed");
-        
         defineObsProperty("ph", getPH());
-        defineObsProperty("temperature", getTemperature());
         frame.setVisible(true);
     }
 
+    /*
     @INTERNAL_OPERATION void ok(ActionEvent ev) {
         updatePH_new();
         updateTemp_new();
         signal("ok");
+    }*/
+
+    @INTERNAL_OPERATION void phOk(ActionEvent ev) { // Handle new button
+        updatePH_new();
+        signal("phOk");
     }
 
     @INTERNAL_OPERATION void closed(WindowEvent ev) {
@@ -35,23 +42,25 @@ public class SensorArtifact extends GUIArtifact {
         getObsProperty("ph").updateValue(getPH());
     }
 
-    @INTERNAL_OPERATION void updateTemp_new() {
-        getObsProperty("temperature").updateValue(getTemperature());
-    }
 
     @INTERNAL_OPERATION void updatePH(ActionEvent ev) {
         getObsProperty("ph").updateValue(getPH());
     }
 
-    @INTERNAL_OPERATION void updateTemp(ActionEvent ev) {
-        getObsProperty("temperature").updateValue(getTemperature());
+    @OPERATION void displayMessage(String message, Color color) {
+        frame.setMessage(message, color);
     }
 
-    @OPERATION void setSensorData(double ph, double temperature) {
-        frame.setPHText(String.valueOf(ph));
-        frame.setTempText(String.valueOf(temperature));
-        getObsProperty("ph").updateValue(ph);
-        getObsProperty("temperature").updateValue(temperature);
+    @OPERATION void neutralizeAcidity() {
+        frame.setPHText("7.0");
+        getObsProperty("ph").updateValue(7.0);
+        displayMessage("Agente regulando o PH: neutralizou acidez", Color.GREEN);
+    }
+
+    @OPERATION void neutralizeBasicity() {
+        frame.setPHText("7.0");
+        getObsProperty("ph").updateValue(7.0);
+        displayMessage("Agente regulando o PH: neutralizou basicidade", Color.BLUE);
     }
 
     @OPERATION void println(String value) {
@@ -62,39 +71,38 @@ public class SensorArtifact extends GUIArtifact {
         return Double.parseDouble(frame.getPHText());
     }
 
-    public double getTemperature() {
-        return Double.parseDouble(frame.getTempText());
-    }
 
     class SensorFrame extends JFrame {
-        private JButton okButton;
-        private JButton randomButton;  // New button
+        //private JButton okButton;
+        private JButton phOkButton;  // New button
         private JTextField phText;
-        private JTextField tempText;
+        private JLabel messageLabel;
 
         public SensorFrame() {
-            setTitle("Sensor GUI");
+            setTitle("Sensor PH");
             setSize(300, 200);
             
             JPanel panel = new JPanel();
             setContentPane(panel);
             
-            okButton = new JButton("ok");
-            okButton.setSize(80, 50);
+
+            phOkButton = new JButton("Update pH");  // New button
+            phOkButton.setSize(100, 50);
 
             phText = new JTextField(10);
             phText.setText("7.0");
             phText.setEditable(true);
 
-            tempText = new JTextField(10);
-            tempText.setText("21.0");
-            tempText.setEditable(true);
-            
+            messageLabel = new JLabel(" ");
+            messageLabel.setOpaque(true);
+
+
             panel.add(new JLabel("pH:"));
             panel.add(phText);
             panel.add(new JLabel("Temperature:"));
-            panel.add(tempText);
-            panel.add(okButton);
+            //panel.add(okButton);
+            panel.add(phOkButton);  // Add new button to panel
+            panel.add(messageLabel);
         }
 
         public String getPHText() {
@@ -105,12 +113,10 @@ public class SensorArtifact extends GUIArtifact {
             phText.setText(s);
         }
 
-        public String getTempText() {
-            return tempText.getText();
-        }
 
-        public void setTempText(String s) {
-            tempText.setText(s);
+        public void setMessage(String message, Color color) {
+            messageLabel.setText(message);
+            messageLabel.setBackground(color);
         }
     }
 

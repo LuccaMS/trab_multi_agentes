@@ -1,49 +1,53 @@
-!monitor_sensor1.
+!monitorar.
+ph_belief(normal).
 
-+!monitor_sensor1
++!monitorar
   <- makeArtifact("sensor1", "artifacts.SensorArtifact", [], D);
      focus(D);
      println("Agent initialized").
 
-+!update_ph_belief(NewBelief)
++!update_ph_belief(NewBelief, Value)
   <- ?ph_belief(CurrentBelief);
      !remove_ph_belief(CurrentBelief);
-     +ph_belief(NewBelief).
+     +ph_belief(NewBelief);
+     !send_ph_belief(NewBelief, Value).
+
 
 +!remove_ph_belief(CurrentBelief)
   <- -ph_belief(CurrentBelief).
 
 +ph(V) : V < 2.0 & V >= 0.0
-  <- !update_ph_belief(extreme_acid);
+  <- !update_ph_belief(extreme_acid, V);
      .print("ALERTA: NIVEIS DE PH EXTREMAMENTE ACIDOS: ", V).
+     //!send_ph_belief(extreme_acid, V).
 
 +ph(V) : V >= 2.0 & V < 6.5
-  <- !update_ph_belief(acid);
+  <- !update_ph_belief(acid, V);
      .print("ALERTA: NIVEIS DE PH ACIDOS: ", V).
+     //!send_ph_belief(acid, V).
 
 +ph(V) : V >= 6.5 & V < 8.5
-  <- !update_ph_belief(normal);
+  <- !update_ph_belief(normal, V);
      .print("INFORME: NIVEIS DE PH ACEITAVEIS: ", V).
+     //!send_ph_belief(normal, V).
 
 +ph(V) : V > 8.5 & V <= 14.0
-  <- !update_ph_belief(basic);
+  <- !update_ph_belief(basic, V); 
      .print("ALERTA: NIVEIS DE PH BASICOS: ", V).
+      //!send_ph_belief(basic, V).
 
 +ph(V) : V > 14.0 | V < 0.0
-  <- !update_ph_belief(out_of_scale);
+  <- !update_ph_belief(out_of_scale, V);
     .print("Something might be wrong with the sensor, pH out of scale: ", V).
+    //!send_ph_belief(out_of_scale, V).
 
-+temperature(V) : V >= 10 & V <= 30.0
-  <- .print("Temperature updated: ", V).
 
-+temperature(V) : V < 10.0
-  <- .print("Low temperature detected: ", V).
++phOk[artifact_id(S)] : ph(PH)
+  <- .print("pH updated via phOk button: ", PH).
 
-+temperature(V) : V > 30.0
-  <- .print("High temperature detected: ", V).
++!send_ph_belief(Belief, Value)
+  <- .send(central_agent, tell, received_ph_belief(Belief, Value)).
 
-+ok[artifact_id(S)] : ph(PH) & temperature(TEMP)
-  <- .print("Current pH: ", PH, ", Current Temperature: ", TEMP).
 
 +closed
   <- .print("Close");
