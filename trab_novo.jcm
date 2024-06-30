@@ -5,7 +5,7 @@ mas main {
     }*/
     agent ph_collector_agent
     agent central_agent : central_agent.asl {
-        beliefs: ph_belief(normal)
+        beliefs: ph_belief(normal), ph(7.0)
     }
     //agent alkalinity_collector_agent
     //agent conductivity_collector_agent

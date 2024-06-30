@@ -109,8 +109,14 @@
   <- ?ph_belief(CurrentBelief);
      -ph_belief(CurrentBelief);
      +ph_belief(NewBelief);
-     .send(ph_collector_agent, askOne, ph(Value));
-     .print("Recieved belief: ", ph_belief, " with value: ", Value).
+     .print("Updated pH belief to: ", NewBelief).
+     .send(ph_collector_agent,achieve,return_Ph_value).
+
++!get_ph_value(PH)
+  <- ?ph(Value);
+     -ph(Value);
+     +ph(PH);
+     .print("Received pH value: ", PH).
 
 /*+received_ph_belief(Belief, Value)
   <- .print("Received belief: ", Belief, " with value: ", Value);
