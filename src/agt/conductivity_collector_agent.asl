@@ -1,39 +1,55 @@
 !monitorar.
-conductivity_belief(normal).
+//conductivity_belief(normal).
 
 +!monitorar
   <- makeArtifact("sensor3", "artifacts.ConductivityArtifact", [], D);
      focus(D);
      println("Conductivity Agent initialized").
 
-+!update_conductivity_belief(NewBelief, Value)
++!update_conductivity_belief(NewBelief)
   <- ?conductivity_belief(CurrentBelief);
      !remove_conductivity_belief(CurrentBelief);
      +conductivity_belief(NewBelief);
-     !send_conductivity_belief(NewBelief, Value).
+     !send_conductivity_belief(NewBelief).
 
 +!remove_conductivity_belief(CurrentBelief)
   <- -conductivity_belief(CurrentBelief).
 
-+conductivity(V) : V < 100
-  <- !update_conductivity_belief(low, V);
++!conductivity(V) : V < 100
+  <- !update_conductivity_belief(low);
      .print("ALERTA: NIVEIS DE CONDUTIVIDADE BAIXOS: ", V).
 
-+conductivity(V) : V >= 100 & V <= 500
-  <- !update_conductivity_belief(normal, V);
++!conductivity(V) : V >= 100 & V <= 500
+  <- !update_conductivity_belief(normal);
      .print("INFORME: NIVEIS DE CONDUTIVIDADE NORMAIS: ", V).
 
-+conductivity(V) : V > 500
-  <- !update_conductivity_belief(high, V);
++!conductivity(V) : V > 500
+  <- !update_conductivity_belief(high);
      .print("ALERTA: NIVEIS DE CONDUTIVIDADE ALTOS: ", V).
 
 +condOk[artifact_id(S)] : conductivity(CD)
-  <- .print("Conductivity updated via condOk button: ", CD).
+  <- .print("Conductivity updated via condOk button: ", CD);
+      !conductivity(CD).
 
-+!send_conductivity_belief(Belief, Value)
-  <- .send(central_agent, tell, received_conductivity_belief(Belief, Value)).
++!send_conductivity_belief(Belief)
+  <- .send(central_agent, achieve, update_conductivity_belief_central(Belief)).
 
-+!set_conductivity(Value)
++!return_CD_value: conductivity(CD)
+  <- .send(central_agent, achieve, get_CD_value(CD)).
+
++!set_CD(Value)
+  <- .print("Setting conductivity to: ", Value);
+      set_conductivity(Value). //ver isso
+
++!adjust_CD(Delta)
+  <- ?conductivity(Value);
+     NewValue = Value + Delta;
+     .print("Adjusting conductivity by: ", Delta , " to: ", NewValue);
+     !set_CD(NewValue).
+
+
+
+/*!set_conductivity(Value)
   <- .print("Setting conductivity to: ", Value);
      .my_name(Me);
      focus(sensor);
@@ -43,7 +59,7 @@ conductivity_belief(normal).
   <- ?conductivity(Value);
      NewValue = Value + Delta;
      !set_conductivity(NewValue).
-
+*/
 +closed
   <- .print("Close");
      .my_name(Me);

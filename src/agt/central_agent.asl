@@ -106,8 +106,8 @@
   <- println("Central Agent started").
 
 +!update_ph_belief_central(NewBelief)
-  <- ?ph_belief(CurrentBelief);
-     -ph_belief(CurrentBelief);
+  <- ?ph_belief(CurrentBelief_ph);
+     -ph_belief(CurrentBelief_ph);
      +ph_belief(NewBelief);
      .print("Updated pH belief to: ", NewBelief);
      .send(ph_collector_agent,achieve,return_Ph_value).
@@ -117,6 +117,20 @@
      -ph(Value);
      +ph(PH);
      .print("Received pH value: ", PH).
+
++!update_conductivity_belief_central(NewBelief)
+  <- ?conductivity_belief(CurrentBelief_cd);
+     -conductivity_belief(CurrentBelief_cd);
+     +conductivity_belief(NewBelief);
+     .print("Updated conductivity belief to: ", NewBelief);
+     .send(conductivity_collector_agent,achieve,return_CD_value).
+
++!get_CD_value(CD)
+  <- ?conductivity(Value);
+     -conductivity(Value);
+     +conductivity(CD);
+     .print("Received conductivity value: ", CD).
+
 
 /*+received_ph_belief(Belief, Value)
   <- .print("Received belief: ", Belief, " with value: ", Value);
