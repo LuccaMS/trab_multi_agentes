@@ -131,16 +131,18 @@
      +conductivity(CD);
      .print("Received conductivity value: ", CD).
 
++!update_alkalinity_belief_central(NewBelief)
+  <- ?alkalinity_belief(CurrentBelief_al);
+     -alkalinity_belief(CurrentBelief_al);
+     +alkalinity_belief(NewBelief);
+     .print("Updated alkalinity belief to: ", NewBelief);
+     .send(alkalinity_collector_agent,achieve,return_alkalinity_value).
 
-/*+received_ph_belief(Belief, Value)
-  <- .print("Received belief: ", Belief, " with value: ", Value);
-     !set_values(Value - 10).
-
-+received_alkalinity_belief(Belief, Value)
-  <- .print("Received belief: ", Belief, " with value: ", Value).
-
-+received_conductivity_belief(Belief, Value)
-  <- .print("Received belief: ", Belief, " with value: ", Value).*/
++!get_alkalinity_value(AL)
+  <- ?alkalinity(Value);
+     -alkalinity(Value);
+     +alkalinity(AL);
+     .print("Received alkalinity value: ", AL).
 
 +!set_values(Value)
   <- .send(ph_collector_agent, achieve, set_pH(Value)).
