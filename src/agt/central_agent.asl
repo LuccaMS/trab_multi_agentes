@@ -109,7 +109,7 @@
   <- ?ph_belief(CurrentBelief);
      -ph_belief(CurrentBelief);
      +ph_belief(NewBelief);
-     .print("Updated pH belief to: ", NewBelief).
+     .print("Updated pH belief to: ", NewBelief);
      .send(ph_collector_agent,achieve,return_Ph_value).
 
 +!get_ph_value(PH)

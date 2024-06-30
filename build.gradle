@@ -2,7 +2,7 @@
    Project trab_novo
 
    Gradle build file for JaCaMo Applications
-   junho 10, 2024 - 17:46:29
+   junho 30, 2024 - 11:27:00
 */
 
 defaultTasks 'run'
@@ -35,7 +35,7 @@ repositories {
 }
 
 dependencies {
-    implementation('org.jacamo:jacamo:1.2')
+    implementation('org.jacamo:jacamo:1.2.3')
 }
 
 sourceSets {
@@ -107,9 +107,7 @@ task uberJar(type: Jar, dependsOn: 'classes') {
         attributes 'Main-Class': 'jacamo.infra.JaCaMoLauncher'
     }
     archiveBaseName = 'jacamo-trab_novo' // the name must start with jacamo so that jacamo...jar is found in the classpath
-    //from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
-    from { configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) } }
-
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     from (project.projectDir.absolutePath) {
         include '**/*.asl'
         include '**/*.xml'
