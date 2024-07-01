@@ -39,7 +39,7 @@
 
 +!set_CD(Value)
   <- .print("Setting conductivity to: ", Value);
-      set_conductivity(Value). //ver isso
+     set_conductivity(Value). 
 
 +!adjust_CD(Delta)
   <- ?conductivity(Value);
