@@ -1,5 +1,4 @@
 !monitorar.
-//conductivity_belief(normal).
 
 +!monitorar
   <- makeArtifact("sensor3", "artifacts.ConductivityArtifact", [], D);
@@ -47,19 +46,6 @@
      //.print("Adjusting conductivity by: ", Delta , " to: ", NewValue);
      !set_CD(NewValue).
 
-
-
-/*!set_conductivity(Value)
-  <- .print("Setting conductivity to: ", Value);
-     .my_name(Me);
-     focus(sensor);
-     .set_obs_property("conductivity", Value).
-
-+!adjust_conductivity(Delta)
-  <- ?conductivity(Value);
-     NewValue = Value + Delta;
-     !set_conductivity(NewValue).
-*/
 +closed
   <- .print("Close");
      .my_name(Me);

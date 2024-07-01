@@ -145,44 +145,5 @@
   <- .print("Diminuindo pH devido à diminuição de alcalinidade");
      .send(ph_collector_agent,achieve,adjust_pH(-0.2)).
 
-/*
-+!decide_action: ph < 6.5 & conductivity < 100
-  <- !increase_ph;
-     !increase_conductivity.
-
-+!decide_action: ph > 8.5 & conductivity > 500
-  <- !decrease_ph;
-     !decrease_conductivity.
-
-+!decide_action: alkalinity < 40.0
-  <- !increase_alkalinity.
-
-+!decide_action: alkalinity > 120.0
-  <- !decrease_alkalinity.
-
-+!increase_ph
-  <- .print("Increasing pH");
-     .send(ph_collector_agent,achieve,adjust_pH(0.5)).
-
-+!decrease_ph
-  <- .print("Decreasing pH");
-     .send(ph_collector_agent,achieve,adjust_pH(-0.5)).
-
-+!increase_conductivity
-  <- .print("Increasing conductivity");
-     .send(conductivity_collector_agent,achieve,adjust_CD(50)).
-
-+!decrease_conductivity
-  <- .print("Decreasing conductivity");
-     .send(conductivity_collector_agent,achieve,adjust_CD(-50)).
-
-+!increase_alkalinity
-  <- .print("Increasing alkalinity");
-    .send(alkalinity_collector_agent,achieve,adjust_alkalinity(10)).
-
-+!decrease_alkalinity
-  <- .print("Decreasing alkalinity");
-     .send(alkalinity_collector_agent,achieve,adjust_alkalinity(-10)).
-*/
 { include("$jacamoJar/templates/common-cartago.asl") }
 { include("$jacamoJar/templates/common-moise.asl") }

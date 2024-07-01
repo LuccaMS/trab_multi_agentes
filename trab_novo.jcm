@@ -1,8 +1,4 @@
 mas main {
-    //agent agent1
-    /*agent ph_collector : ph_collector_agent.asl {
-        beliefs: ph_belief(normal)
-    }*/
     agent ph_collector_agent : ph_collector_agent.asl {
         beliefs: ph_belief(normal)
     }
@@ -18,6 +14,4 @@ mas main {
         beliefs: ph_belief(start), ph(0), conductivity_belief(start), conductivity(0),
          alkalinity_belief(start), alkalinity(0)
     }
-    //agent alkalinity_collector_agent
-    //agent conductivity_collector_agent
 }
