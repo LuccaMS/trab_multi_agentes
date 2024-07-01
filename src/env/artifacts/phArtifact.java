@@ -86,7 +86,7 @@ public class phArtifact extends GUIArtifact {
             phOkButton.setSize(100, 50);
 
             phText = new JTextField(10);
-            phText.setText("7.0");
+            phText.setText("0.0");
             phText.setEditable(true);
 
             messageLabel = new JLabel(" ");
@@ -95,9 +95,7 @@ public class phArtifact extends GUIArtifact {
 
             panel.add(new JLabel("pH:"));
             panel.add(phText);
-            panel.add(new JLabel("Temperature:"));
-            //panel.add(okButton);
-            panel.add(phOkButton);  // Add new button to panel
+            panel.add(phOkButton); 
             panel.add(messageLabel);
         }
 

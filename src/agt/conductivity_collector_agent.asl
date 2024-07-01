@@ -16,16 +16,16 @@
   <- -conductivity_belief(CurrentBelief).
 
 +!conductivity(V) : V < 100
-  <- !update_conductivity_belief(low);
-     .print("ALERTA: NIVEIS DE CONDUTIVIDADE BAIXOS: ", V).
+  <- !update_conductivity_belief(low).
+     //.print("ALERTA: NIVEIS DE CONDUTIVIDADE BAIXOS: ", V).
 
 +!conductivity(V) : V >= 100 & V <= 500
-  <- !update_conductivity_belief(normal);
-     .print("INFORME: NIVEIS DE CONDUTIVIDADE NORMAIS: ", V).
+  <- !update_conductivity_belief(normal).
+     //.print("INFORME: NIVEIS DE CONDUTIVIDADE NORMAIS: ", V).
 
 +!conductivity(V) : V > 500
-  <- !update_conductivity_belief(high);
-     .print("ALERTA: NIVEIS DE CONDUTIVIDADE ALTOS: ", V).
+  <- !update_conductivity_belief(high).
+     //.print("ALERTA: NIVEIS DE CONDUTIVIDADE ALTOS: ", V).
 
 +condOk[artifact_id(S)] : conductivity(CD)
   <- .print("Conductivity updated via condOk button: ", CD);
@@ -38,13 +38,13 @@
   <- .send(central_agent, achieve, get_CD_value(CD)).
 
 +!set_CD(Value)
-  <- .print("Setting conductivity to: ", Value);
+  <- //.print("Setting conductivity to: ", Value);
      set_conductivity(Value). 
 
 +!adjust_CD(Delta)
   <- ?conductivity(Value);
      NewValue = Value + Delta;
-     .print("Adjusting conductivity by: ", Delta , " to: ", NewValue);
+     //.print("Adjusting conductivity by: ", Delta , " to: ", NewValue);
      !set_CD(NewValue).
 
 

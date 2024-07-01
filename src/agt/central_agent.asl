@@ -47,9 +47,105 @@
      !decide_action.
 
 //Caso algum dos sensores não tenha sido iniciado ainda está no estado inicial então não vamos tomar ações
-+!decide_action(Value_ph, Value_cd, Value_al): ph_belief(start) | conductivity_belief(start) | alkalinity_belief(start)
++!decide_action: ph_belief(start) | conductivity_belief(start) | alkalinity_belief(start)
   <- .print("Erro: algum sensor ainda não foi iniciado").
 
++!decide_action
+  <- ?ph(Value_ph);
+     ?conductivity(Value_cd);
+     ?alkalinity(Value_al);
+     !evaluate_ph(Value_ph, Value_cd, Value_al);
+     !evaluate_conductivity(Value_cd, Value_ph, Value_al);
+     !evaluate_alkalinity(Value_al, Value_ph, Value_cd).
+
++!evaluate_ph(Value_ph, Value_cd, Value_al): Value_ph < 6.5
+  <- .print("ALERTA: Níveis de pH ácidos: ", Value_ph);
+     !increase_ph. 
+
++!evaluate_ph(Value_ph, Value_cd, Value_al): Value_ph > 8.5
+  <- .print("ALERTA: Níveis de pH básicos: ", Value_ph);
+     !decrease_ph.
+
++!evaluate_ph(Value_ph, Value_cd, Value_al): Value_ph >= 6.5 & Value_ph <= 8.5
+  <- .print("Níveis de pH normais: ", Value_ph).
+
++!evaluate_conductivity(Value_cd, Value_ph, Value_al): Value_cd < 100
+  <- .print("ALERTA: Níveis de condutividade baixos: ", Value_cd);
+     !increase_conductivity.
+
++!evaluate_conductivity(Value_cd, Value_ph, Value_al): Value_cd > 500
+  <- .print("ALERTA: Níveis de condutividade altos: ", Value_cd);
+     !decrease_conductivity.
+
++!evaluate_conductivity(Value_cd, Value_ph, Value_al): Value_cd >= 100 & Value_cd <= 500
+  <- .print("Níveis de condutividade normais: ", Value_cd).
+
++!evaluate_alkalinity(Value_al, Value_ph, Value_cd): Value_al < 40.0
+  <- .print("ALERTA: Níveis de alcalinidade baixos: ", Value_al);
+     !increase_alkalinity.
+
++!evaluate_alkalinity(Value_al, Value_ph, Value_cd): Value_al > 120.0
+  <- .print("ALERTA: Níveis de alcalinidade altos: ", Value_al);
+     !decrease_alkalinity.
+
++!evaluate_alkalinity(Value_al, Value_ph, Value_cd): Value_al >= 40.0 & Value_al <= 120.0
+  <- .print("Níveis de alcalinidade normais: ", Value_al).
+
++!increase_ph
+  <- .print("Aumentando pH");
+     .send(ph_collector_agent,achieve,adjust_pH(0.5));
+     !decrease_conductivity_by_ph.
+
++!decrease_ph
+  <- .print("Diminuindo pH");
+     .send(ph_collector_agent,achieve,adjust_pH(-0.5));
+     !increase_conductivity_by_ph.
+
++!increase_conductivity_by_ph
+  <- .print("Aumentando condutividade devido à diminuição de pH");
+     .send(conductivity_collector_agent,achieve,adjust_CD(25)).
+
++!decrease_conductivity_by_ph
+  <- .print("Diminuindo condutividade devido ao aumento de pH");
+     .send(conductivity_collector_agent,achieve,adjust_CD(-25)).
+
++!increase_conductivity
+  <- .print("Aumentando condutividade");
+     .send(conductivity_collector_agent,achieve,adjust_CD(50));
+     !increase_alkalinity_by_conductivity.
+
++!decrease_conductivity
+  <- .print("Diminuindo condutividade");
+     .send(conductivity_collector_agent,achieve,adjust_CD(-50));
+     !decrease_alkalinity_by_conductivity.
+
++!increase_alkalinity_by_conductivity
+  <- .print("Aumentando alcalinidade devido ao aumento de condutividade");
+     .send(alkalinity_collector_agent,achieve,adjust_alkalinity(10)).
+
++!decrease_alkalinity_by_conductivity
+  <- .print("Diminuindo alcalinidade devido à diminuição de condutividade");
+     .send(alkalinity_collector_agent,achieve,adjust_alkalinity(-10)).
+
++!increase_alkalinity
+  <- .print("Aumentando alcalinidade");
+     .send(alkalinity_collector_agent,achieve,adjust_alkalinity(10));
+     !increase_ph_by_alkalinity.
+
++!decrease_alkalinity
+  <- .print("Diminuindo alcalinidade");
+     .send(alkalinity_collector_agent,achieve,adjust_alkalinity(-10));
+     !decrease_ph_by_alkalinity.
+
++!increase_ph_by_alkalinity
+  <- .print("Aumentando pH devido ao aumento de alcalinidade");
+     .send(ph_collector_agent,achieve,adjust_pH(0.2)).
+
++!decrease_ph_by_alkalinity
+  <- .print("Diminuindo pH devido à diminuição de alcalinidade");
+     .send(ph_collector_agent,achieve,adjust_pH(-0.2)).
+
+/*
 +!decide_action: ph < 6.5 & conductivity < 100
   <- !increase_ph;
      !increase_conductivity.
@@ -87,6 +183,6 @@
 +!decrease_alkalinity
   <- .print("Decreasing alkalinity");
      .send(alkalinity_collector_agent,achieve,adjust_alkalinity(-10)).
-
+*/
 { include("$jacamoJar/templates/common-cartago.asl") }
 { include("$jacamoJar/templates/common-moise.asl") }

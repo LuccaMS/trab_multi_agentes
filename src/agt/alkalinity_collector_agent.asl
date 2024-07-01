@@ -16,16 +16,16 @@
   <- -alkalinity_belief(CurrentBelief).
 
 +!alkalinity(V) : V < 40.0
-  <- !update_alkalinity_belief(low);
-     .print("ALERTA: NIVEIS DE ALCALINIDADE BAIXOS: ", V).
+  <- !update_alkalinity_belief(low).
+     //.print("ALERTA: NIVEIS DE ALCALINIDADE BAIXOS: ", V).
 
 +!alkalinity(V) : V >= 40.0 & V <= 120.0
-  <- !update_alkalinity_belief(normal);
-     .print("INFORME: NIVEIS DE ALCALINIDADE NORMAIS: ", V).
+  <- !update_alkalinity_belief(normal).
+     //.print("INFORME: NIVEIS DE ALCALINIDADE NORMAIS: ", V).
 
 +!alkalinity(V) : V > 120.0
-  <- !update_alkalinity_belief(high);
-     .print("ALERTA: NIVEIS DE ALCALINIDADE ALTOS: ", V).
+  <- !update_alkalinity_belief(high).
+     //.print("ALERTA: NIVEIS DE ALCALINIDADE ALTOS: ", V).
 
 +alkOk[artifact_id(S)] : alkalinity(AL)
   <- .print("Alkalinity updated via alkOk button: ", AL);
@@ -38,13 +38,13 @@
   <- .send(central_agent, achieve, get_alkalinity_value(AL)).
 
 +!set_alkalinity(Value)
-  <- .print("Setting alkalinity to: ", Value);
-      setAlkalinity(Value).
+  <- //.print("Setting alkalinity to: ", Value);
+      set_alkalinity(Value).
 
 +!adjust_alkalinity(Delta)
   <- ?alkalinity(Value);
      NewValue = Value + Delta;
-      .print("Adjusting alkalinity by: ", Delta , " to: ", NewValue);
+     //.print("Adjusting alkalinity by: ", Delta , " to: ", NewValue);
      !set_alkalinity(NewValue).
 
 +closed

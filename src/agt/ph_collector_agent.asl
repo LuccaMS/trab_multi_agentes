@@ -15,24 +15,24 @@
   <- -ph_belief(CurrentBelief).
 
 +!ph(V) : V < 2.0 & V >= 0.0
-  <- !update_ph_belief(extreme_acid);
-     .print("ALERTA: NIVEIS DE PH EXTREMAMENTE ACIDOS: ", V).
+  <- !update_ph_belief(extreme_acid).
+     //.print("ALERTA: NIVEIS DE PH EXTREMAMENTE ACIDOS: ", V).
 
 +!ph(V) : V >= 2.0 & V < 6.5
-  <- !update_ph_belief(acid);
-     .print("ALERTA: NIVEIS DE PH ACIDOS: ", V).
+  <- !update_ph_belief(acid).
+     //.print("ALERTA: NIVEIS DE PH ACIDOS: ", V).
 
 +!ph(V) : V >= 6.5 & V < 8.5
-  <- !update_ph_belief(normal);
-     .print("INFORME: NIVEIS DE PH ACEITAVEIS: ", V).
+  <- !update_ph_belief(normal).
+     //.print("INFORME: NIVEIS DE PH ACEITAVEIS: ", V).
 
 +!ph(V) : V > 8.5 & V <= 14.0
-  <- !update_ph_belief(basic); 
-     .print("ALERTA: NIVEIS DE PH BASICOS: ", V).
+  <- !update_ph_belief(basic).
+     //.print("ALERTA: NIVEIS DE PH BASICOS: ", V).
 
 +!ph(V) : V > 14.0 | V < 0.0
-  <- !update_ph_belief(out_of_scale);
-    .print("Something might be wrong with the sensor, pH out of scale: ", V).
+  <- !update_ph_belief(out_of_scale).
+    //.print("Something might be wrong with the sensor, pH out of scale: ", V).
 
 +phOk[artifact_id(S)] : ph(PH)
   <- .print("pH updated via phOk button: ", PH);
@@ -45,13 +45,13 @@
   <- .send(central_agent, achieve, get_ph_value(PH)).
 
 +!set_pH(Value)
-  <- .print("Setting pH to: ", Value);
+  <- //.print("Setting pH to: ", Value);
      setPH(Value).
 
 +!adjust_pH(Delta)
   <- ?ph(Value);
      NewValue = Value + Delta;
-     .print("Adjusting pH by: ", Delta , " to: ", NewValue);
+     //.print("Adjusting pH by: ", Delta , " to: ", NewValue);
      !set_pH(NewValue).
 
 +closed
